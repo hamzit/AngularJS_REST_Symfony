@@ -1,0 +1,105 @@
+
+<div class="container" ng-controller="SearchController">
+    <div class="row" style="display : flex;">
+        <div class="col-md-4">
+          <h2>Welcome {{ user }} </h2>
+        </div>
+        <div style="padding-top: 20px;">
+          <a href="{{ path('logout') }}" class="btn btn-info btn-lg pull-right col-md-offset-10">
+              <span class="glyphicon glyphicon-log-out"></span> Log out
+          </a>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-6 col-md-offset-3">       <!-- Standard button -->
+
+
+          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+          <a href="#!profile"><button type="button" class="btn btn-primary ribbon">Profile</button>
+          </a>
+          <!-- Indicates a successful or positive action -->
+          <a href="#!friends"><button type="button" class="btn btn-success ribbon">Friends</button>
+          </a>
+          <a href="#!search"><button type="button" class="btn btn-warning ribbon">Search</button>
+          </a>
+
+
+
+
+      </div>
+</div>
+
+
+<div class="row">
+  <h3>Recherche des amis</h3>
+         <div id="custom-search-input" ng-init="search()">
+                          <div class="input-group col-md-12">
+                              <input ng-change="myFunc()" type="text" class="search-query form-control"   ng-model="person" placeholder="Search" />
+                              <span class="input-group-btn">
+                                <button     class="btn btn-danger" type="button">
+                                    <span class=" glyphicon glyphicon-search "></span>
+                                </button>
+
+                              </span>
+
+                          </div>
+                      </div>
+</div>
+
+<br />
+<div class="view row" ng-show="show" >
+  <div class="alert alert-success alert-dismissable" ng-show="addSucess">
+      <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a> -->
+      <strong>Yes!</strong> Friend added!
+  </div>
+
+  <div class="alert alert-warning alert-dismissable" ng-show="warning">
+    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a> -->
+      <strong>Nope</strong> Either Friend already in your list or something wrong happened!
+  </div>
+
+<ul class="list-group">
+<div class="panel-body col-md-6 ">
+
+
+<div class="col-md-12 row">
+<li ng-repeat="x in filteredResults  = ( test | filter:person )" class="lista1 list-group-item ">
+<div   class="checkbox">
+<label for="checkbox"> {{x.username}} </label>
+</div>
+<div class="pull-right action-buttons">
+<a><span style="cursor: pointer;" ng-click="addfriend(x.id,x.username)" class="glyphicon glyphicon-plus"></span></a>
+</div>
+</li>
+</div>
+
+
+</div>
+
+<div class="panel-footer col-md-2 ">
+    <div class="row">
+        <div class="col-lg-7 col-md-offset-3" >
+            <h6>Total Count </h6>
+                <h4><span class="label label-info">{{ filteredResults.length }}</span></h4>
+        </div>
+        <!-- <div >
+            <ul class="pagination pagination-sm ">
+                <li class="disabled"><a href="javascript:void(0)">«</a></li>
+                <li class="active"><a class="group1" href="#">1 <span class="sr-only">(current)</span></a></li>
+
+                <li><a class="group{{ num }}" href="#">2</a></li>
+                <li><a class="group{{ num }}" href="#">{{ num }}</a></li>
+
+                <li><a href="javascript:void(0)">»</a></li>
+            </ul>
+        </div> -->
+    </div>
+</div>
+
+</ul>
+
+</div>
+</div>

@@ -1,0 +1,80 @@
+
+<div class="container" ng-controller="ProfileController" ng-init="load()">
+    <div class="row" style="display : flex;">
+        <div class="col-md-4">
+          <h2>Welcome {{ user }} </h2>
+        </div>
+        <div style="padding-top: 20px;">
+          <a href="{{ path('logout') }}" class="btn btn-info btn-lg pull-right col-md-offset-10">
+              <span class="glyphicon glyphicon-log-out"></span> Log out
+          </a>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-6 col-md-offset-3">       <!-- Standard button -->
+
+
+          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+          <a href="#!profile"><button type="button" class="btn btn-primary ribbon">Profile</button>
+          </a>
+          <!-- Indicates a successful or positive action -->
+          <a href="#!friends"><button type="button" class="btn btn-success ribbon">Friends</button>
+          </a>
+          <a href="#!search"><button type="button" class="btn btn-warning ribbon">Search</button>
+          </a>
+
+
+
+
+      </div>
+</div>
+
+<br />
+
+<div class="view row"  >
+  <div class="alert alert-success alert-dismissable" ng-show="addSucess">
+      <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a> -->
+      <strong>Yes!</strong> Info Updated !
+  </div>
+
+  <div class="alert alert-warning alert-dismissable" ng-show="warning">
+    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a> -->
+      <strong>Nope</strong> Something Went wrong!
+  </div>
+
+        <div class="row" ng-init="load()">
+
+        <div class="col-md-6 col-md-offset-3">
+            <form ng-submit="submit()">
+
+
+
+            <div class="form-group">
+                <span>Age</span><input ng-model="age" type="number" name="age" id="age" tabindex="5" class="form-control" value="{{ age }}" placeholder="Age" min="0" required>
+            </div>
+            <div class="form-group">
+                <span>Race</span><input ng-model="race" type="text" name="race" id="race" tabindex="6" class="form-control" value="{{ race }}" placeholder="Race" required>
+            </div>
+            <div class="form-group">
+                <span>Famille</span><input ng-model="famille" type="text" name="famille" id="famille" tabindex="7" class="form-control" value="{{ famille }}" placeholder="Family" required>
+            </div>
+            <div class="form-group">
+                <span>Food</span><input ng-model="food" type="text" name="food" id="food" tabindex="8" class="form-control" value="{{ food }}" placeholder="Food" required>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="submit" name="register-submit" id="register-submit" tabindex="9" class="form-control btn btn-register" value="Update">
+                    </div>
+                </div>
+            </div>
+      </form>
+        </div>
+
+    </div>
+
+
+</div>

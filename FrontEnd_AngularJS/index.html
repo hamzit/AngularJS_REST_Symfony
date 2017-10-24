@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body ng-app="hamza">
+
+    <!-- <p><a href="#/!">Main</a></p>
+
+    <a href="#!red">Red</a>
+    <a href="#!green">Green</a>
+    <a href="#!blue">Blue</a> -->
+
+    <div ng-view>
+
+    </div>
+
+
+    <!-- {% if test is defined %}
+    the result is
+    {{  test }}
+    {% endif %}
+
+
+    {% if error is defined %}
+    <div class="alert alert-danger">
+        <strong>Oops!</strong> {{ error }}
+    </div>
+    {% endif %}
+
+
+    {% if sucess is defined %}
+    <div class="alert alert-success">
+        <strong>Oh Yeah!</strong> {{ sucess }}
+    </div>
+    {% endif %}
+ -->
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./js/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="./js/script.js"></script>
+
+    <script>
+    var app = angular.module("hamza", ["ngRoute"]);
+
+    app.factory('Auth', function(){
+    var user;
+    var token;
+    var id;
+
+    return{
+        setUser : function(aUser,atoken,someid){
+            user = aUser;
+            token = atoken;
+            id = someid;
+
+            // return user;
+        },
+        isLoggedIn : function(){
+            return(user)? user : false;
+        },
+        getUser : function(){
+            return user;
+        },
+        getToken : function(){
+            return token;
+        },
+        getId : function(){
+            return id;
+        }
+      }
+    });
+
+
+    app.config(function($routeProvider) {
+        $routeProvider
+        .when("/", {
+            templateUrl : "login.html",
+            // controller : "LoginCheckController"
+        })
+        .when("/friends", {
+          templateUrl : "friends.html"
+        })
+         .when("/profile", {
+          templateUrl : "mainprofile.html"
+        })
+        .when("/search", {
+          templateUrl : "search.html"
+        }).otherwise({redirectTo: '/'});
+    });
+
+
+
+    app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
+        $rootScope.$on('$routeChangeStart', function (event) {
+
+            if (!Auth.isLoggedIn() & ['/friends', '/profile', '/search'].includes($location.path())  ) {
+                console.log('DENY');
+                event.preventDefault();
+                $location.path('/');
+            }
+            else {
+                console.log('ALLOW');
+                // $location.path('/');
+            }
+        });
+    }]);
+
+
+
+app.controller('LoginCheckController', ['$scope','$location','$http','$httpParamSerializer','Auth', LoginCheckController]);
+app.controller('SearchController', ['$scope','$location','$http','Auth', SearchController]);
+app.controller('FriendsController', ['$scope','$location','$http','Auth', FriendsController]);
+app.controller('ProfileController', ['$scope','$location','$http','Auth', ProfileController]);
+app.controller('RegisterController', ['$scope','$location','$http','Auth', RegisterController]);
+
+
+function LoginCheckController($scope,$location,$http,$httpParamSerializer,au) {
+        var test;
+
+        // $rootScope.name = 'hamza';
+        console.log(au.isLoggedIn());
+
+            $scope.submit = function() { //onsubmit
+              // alert($scope.username);
+              datas = {
+                  "user" : $scope.username,
+                  "pass" : $scope.password
+              };
+
+              // tosend = $httpParamSe/rializer(datas);
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com/auth',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                headers: {
+                  'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                  'Content-Type': 'application/x-www-form-urlencoded'},
+                data: datas,
+                // paramSerializer: '$httpParamSerializerJQLike'
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(response, status, headers, config,Auth) {
+                  // this callback will be called asynchronously
+                  // when the response is available
+                  console.log(response.data);
+                  // Auth.setUser(response.data.username);
+                  if(response.data.status == 'sucess'){
+                    au.setUser(response.data.username,response.data.token,response.data.id);
+                    // console.log('maybe '+response.data.token);
+                  }
+                  $location.path('/search');
+                }, function errorCallback(response, status, headers, config) {
+                    alert('fail');
+                    // console.log(header);
+                    // console.log(status);
+                    // console.log(config);
+                    // console.log(data);
+                    console.log(response);
+
+                  // called asynchronously if an error occurs
+                  // or server returns response with an error status.
+                });
+
+              // if ($scope.text) {
+              //   $scope.list.push(this.text);
+              //   $scope.text = '';
+              // }
+            };
+      }
+
+function SearchController($scope,$location,$http,au) {
+
+              $scope.addSucess = false;
+              $scope.warning = false;
+                console.log('name'+au.getUser());
+                console.log('id'+au.getId());
+                $scope.user = au.getUser();
+                $scope.id = au.getId();
+                $scope.token = au.getToken();
+
+
+              $scope.search = function() {
+                console.log('dafuq');
+                datas = {
+                    "user" : $scope.user = au.getUser(),
+                    "token" : $scope.token = au.getToken(),
+                };
+                console.log(datas.user);
+                $http({
+                  method: 'POST',
+                  url: 'http://rest.hamzadev.com/all',
+                  // config: 'Content-Type: json',
+                  // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                  headers: {
+                    'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                    'Content-Type': 'application/x-www-form-urlencoded'},
+                  data: datas,
+                  // paramSerializer: '$httpParamSerializerJQLike'
+                  // config: 'Content-Type: application/x-www-form-urlencoded',
+                }).then(function successCallback(response, status, headers, config) {
+                    console.log(response.data);
+                    $scope.test=response.data;
+
+                  }, function errorCallback(response, status, headers, config) {
+                      alert('fail 2');
+                      // console.log(header);
+                      // console.log(status);
+                      // console.log(config);
+                      // console.log(data);
+                      console.log(response);
+
+                  });
+              };
+              // and then set values on the object
+              // $scope.all = function() {
+              //   return $scope.test;
+              // }
+
+
+              // display list after input change
+              $scope.myFunc = function() {
+                  $scope.show = true ;
+                  console.log('suuup');
+              };
+
+              $scope.addfriend = function(id,username) {
+                $scope.addSucess = false;
+                $scope.warning = false;
+                toSend = {
+                    "user" : $scope.user = au.getUser(),
+                    "token" : $scope.token = au.getToken(),
+                    "id": au.getId(),
+                    "friendId": id,
+                    "friendUsername": username
+                };
+
+
+
+                  console.log('id is '+id+' ,username is '+username);
+                  $http({
+                    method: 'POST',
+                    url: 'http://rest.hamzadev.com/add',
+                    headers: {
+                      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                      'Content-Type': 'application/x-www-form-urlencoded'},
+                    data: toSend,
+                  }).then(function successCallback(response, status, headers, config,Auth) {
+                      console.log(response.data);
+                      // $scope.test=response.data;
+                      if(response.data.status == 'sucess'){
+                          $scope.addSucess = true;
+                      } else {
+                          $scope.warning = true;
+                      }
+                    }, function errorCallback(response, status, headers, config) {
+                          $scope.warning = true;
+                        alert('fail');
+                        console.log(response);
+                    });
+              };
+
+                $scope.reset = function() {
+                    $scope.addSucess = false ;
+                    $scope.warning = false ;
+                }
+
+          }
+
+
+
+function FriendsController($scope,$location,$http,au) {
+          $scope.addSucess = false;
+          $scope.warning = false;
+          $scope.friendsList = {};
+
+          $scope.listFriends = function() {
+            console.log('dafuq');
+            datas = {
+                "user" : $scope.user = au.getUser(),
+                "token" : $scope.token = au.getToken(),
+                "id": au.getId()
+            };
+            console.log(datas.user);
+            $http({
+              method: 'POST',
+              url: 'http://rest.hamzadev.com/friends',
+              // config: 'Content-Type: json',
+              // headers: {'Content-Type': 'application/json; charset=utf-8'},
+              headers: {
+                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                'Content-Type': 'application/x-www-form-urlencoded'},
+              data: datas,
+              // paramSerializer: '$httpParamSerializerJQLike'
+              // config: 'Content-Type: application/x-www-form-urlencoded',
+            }).then(function successCallback(response, status, headers, config) {
+                console.log(response.data);
+                $scope.friendsList =response.data;
+
+              }, function errorCallback(response, status, headers, config) {
+                  // alert('fail 2');
+                  console.log(response);
+
+              });
+          };
+
+
+
+            $scope.removeFriend = function(id, username) {
+              // console.log('dafuq');
+              datas = {
+                  "user" : $scope.user = au.getUser(),
+                  "token" : $scope.token = au.getToken(),
+                  "id": au.getId(),
+                  "friendId": id,
+                  "friendUsername": username,
+              };
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com/remove',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                headers: {
+                  'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                  'Content-Type': 'application/x-www-form-urlencoded'},
+                data: datas,
+                // paramSerializer: '$httpParamSerializerJQLike'
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(response, status, headers, config) {
+                  $scope.listFriends();
+                  console.log(response.data);
+                  $scope.friendsList =response.data;
+
+                }, function errorCallback(response, status, headers, config) {
+                    alert('fail 2');
+                    console.log(response);
+
+                });
+
+            };
+
+}
+
+function ProfileController($scope,$location,$http,au) {
+
+            $scope.age = '';
+            $scope.race = '';
+            $scope.famille = '';
+            $scope.food = '';
+            $scope.addSucess = false;
+            $scope.warning = false;
+
+            $scope.load = function() {
+              datas = {
+                  "user" : $scope.user = au.getUser(),
+                  "token" : $scope.token = au.getToken(),
+                  "id": au.getId(),
+                  "age" : $scope.age,
+                  "race" : $scope.race,
+                  "famille" : $scope.famille,
+                  "food" : $scope.food,
+                  "get" : 'true', //don't egt profile
+              };
+
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com/edit',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                headers: {
+                  'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                  'Content-Type': 'application/x-www-form-urlencoded'},
+                data: datas,
+                // paramSerializer: '$httpParamSerializerJQLike'
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(response, status, headers, config) {
+                // load user info
+                    $scope.age = parseInt(response.data.age,10);
+                    $scope.race = response.data.race;
+                    $scope.famille= response.data.famille;
+                    $scope.food = response.data.food;
+
+                }, function errorCallback(response, status, headers, config) {
+
+                    console.log(response);
+
+                });
+
+
+            };
+
+
+            $scope.submit = function() {
+              $scope.addSucess = false;
+              $scope.warning = false;
+              datas = {
+                  "user" : $scope.user = au.getUser(),
+                  "token" : $scope.token = au.getToken(),
+                  "id": au.getId(),
+                  "age" : $scope.age,
+                  "race" : $scope.race,
+                  "famille" : $scope.famille,
+                  "food" : $scope.food,
+                  "get" : 'false' // don't get profile
+              };
+
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com/edit',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                headers: {
+                  'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                  'Content-Type': 'application/x-www-form-urlencoded'},
+                data: datas,
+                // paramSerializer: '$httpParamSerializerJQLike'
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(response, status, headers, config) {
+                  if(response.data.status == 'sucess'){
+                    $scope.addSucess = true;
+                  } else {
+                    $scope.warning = true;
+                  }
+                  console.log(response.data);
+                  $scope.friendsList =response.data;
+
+                }, function errorCallback(response, status, headers, config) {
+                    $scope.warning = true;
+                    console.log(response);
+
+                });
+
+
+
+            };
+
+
+
+}
+
+function RegisterController($scope,$location,$http,au) {
+
+            $scope.age = '';
+            $scope.race = '';
+            $scope.famille = '';
+            $scope.food = '';
+            $scope.username = '';
+            $scope.password = '';
+            $scope.email = '';
+            $scope.yes = '';
+            $scope.no = '';
+            $scope.addSucess = false;
+            $scope.warning = false;
+
+            $scope.submit = function() {
+              $scope.addSucess = false;
+              $scope.warning = false;
+              datas = {
+                  "user" : $scope.username,
+                  "password" : $scope.password,
+                  "name": $scope.name,
+                  "age" : $scope.age,
+                  "race" : $scope.race,
+                  "famille" : $scope.famille,
+                  "food" : $scope.food,
+                  "email" : $scope.email // don't get profile
+              };
+
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com/register',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json; charset=utf-8'},
+                headers: {
+                  'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                  'Content-Type': 'application/x-www-form-urlencoded'},
+                data: datas,
+                // paramSerializer: '$httpParamSerializerJQLike'
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(response, status, headers, config) {
+                  if(response.data.status == 'sucess'){
+                    $scope.yes=response.data.message;
+                    $scope.addSucess = true;
+                    $scope.warning = false;
+                    au.setUser(response.data.user);
+                    au.setId(response.data.id);
+                    au.setToken(response.data.token);
+
+                    // $location.path('/search');
+                  } else {
+                    $scope.no=response.data.message;
+                    $scope.warning = true;
+                    $scope.addSucess = false;
+                  }
+                  console.log(response.data);
+
+                }, function errorCallback(response, status, headers, config) {
+                    $scope.warning = true;
+                    console.log(response);
+
+                });
+
+
+
+            };
+
+
+
+}
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+
+<div class="container" ng-controller="FriendsController">
+    <div class="row" style="display : flex;">
+        <div class="col-md-4">
+          <h2>Welcome {{ user }} </h2>
+        </div>
+        <div style="padding-top: 20px;">
+          <a href="{{ path('logout') }}" class="btn btn-info btn-lg pull-right col-md-offset-10">
+              <span class="glyphicon glyphicon-log-out"></span> Log out
+          </a>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-6 col-md-offset-3">       <!-- Standard button -->
+
+
+          <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+          <a href="#!profile"><button type="button" class="btn btn-primary ribbon">Profile</button>
+          </a>
+          <!-- Indicates a successful or positive action -->
+          <a href="#!friends"><button type="button" class="btn btn-success ribbon">Friends</button>
+          </a>
+          <a href="#!search"><button type="button" class="btn btn-warning ribbon">Search</button>
+          </a>
+
+
+
+
+      </div>
+</div>
+
+
+<br />
+<div class="row col-lg-offset-4" ng-init='listFriends()' >
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-list"></span>Friends' List
+
+                </div>
+
+                <div class="panel-body">
+                    <ul class="list-group">
+
+
+                        <li class="lista1 list-group-item " ng-repeat="x in friendsList">
+                            <div class="checkbox">
+                                <label for="checkbox">
+                                    {{x.username}}
+                                </label>
+                            </div>
+                            <div class="pull-right action-buttons">
+                                <a  class="trash">
+                                  <span ng-click="removeFriend(x.id,x.username)" class="glyphicon glyphicon-remove"></span></a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>
+                                Total Count <span class="label label-info">{{ friendsList.length }}</span></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>
