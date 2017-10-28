@@ -144,7 +144,7 @@ function LoginCheckController($scope,$location,$http,$httpParamSerializer,au) {
               // tosend = $httpParamSe/rializer(datas);
               $http({
                 method: 'POST',
-                url: 'http://rest.hamzadev.com/auth',
+                url: 'https://rest.hamzadev.com/auth',
                 // config: 'Content-Type: json',
                 // headers: {'Content-Type': 'application/json; charset=utf-8'},
                 headers: {
@@ -202,7 +202,7 @@ function SearchController($scope,$location,$http,au) {
                 console.log(datas.user);
                 $http({
                   method: 'POST',
-                  url: 'http://rest.hamzadev.com/all',
+                  url: 'https://rest.hamzadev.com/all',
                   // config: 'Content-Type: json',
                   // headers: {'Content-Type': 'application/json; charset=utf-8'},
                   headers: {
@@ -253,7 +253,7 @@ function SearchController($scope,$location,$http,au) {
                   console.log('id is '+id+' ,username is '+username);
                   $http({
                     method: 'POST',
-                    url: 'http://rest.hamzadev.com/add',
+                    url: 'https://rest.hamzadev.com/add',
                     headers: {
                       'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
                       'Content-Type': 'application/x-www-form-urlencoded'},
@@ -297,7 +297,7 @@ function FriendsController($scope,$location,$http,au) {
             console.log(datas.user);
             $http({
               method: 'POST',
-              url: 'http://rest.hamzadev.com/friends',
+              url: 'https://rest.hamzadev.com/friends',
               // config: 'Content-Type: json',
               // headers: {'Content-Type': 'application/json; charset=utf-8'},
               headers: {
@@ -330,7 +330,7 @@ function FriendsController($scope,$location,$http,au) {
               };
               $http({
                 method: 'POST',
-                url: 'http://rest.hamzadev.com/remove',
+                url: 'https://rest.hamzadev.com/remove',
                 // config: 'Content-Type: json',
                 // headers: {'Content-Type': 'application/json; charset=utf-8'},
                 headers: {
@@ -377,7 +377,7 @@ function ProfileController($scope,$location,$http,au) {
 
               $http({
                 method: 'POST',
-                url: 'http://rest.hamzadev.com/edit',
+                url: 'https://rest.hamzadev.com/edit',
                 // config: 'Content-Type: json',
                 // headers: {'Content-Type': 'application/json; charset=utf-8'},
                 headers: {
@@ -419,7 +419,7 @@ function ProfileController($scope,$location,$http,au) {
 
               $http({
                 method: 'POST',
-                url: 'http://rest.hamzadev.com/edit',
+                url: 'https://rest.hamzadev.com/edit',
                 // config: 'Content-Type: json',
                 // headers: {'Content-Type': 'application/json; charset=utf-8'},
                 headers: {
@@ -481,7 +481,7 @@ function RegisterController($scope,$location,$http,au) {
 
               $http({
                 method: 'POST',
-                url: 'http://rest.hamzadev.com/register',
+                url: 'https://rest.hamzadev.com/register',
                 // config: 'Content-Type: json',
                 // headers: {'Content-Type': 'application/json; charset=utf-8'},
                 headers: {
