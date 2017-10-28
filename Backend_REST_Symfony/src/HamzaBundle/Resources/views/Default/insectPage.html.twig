@@ -1,0 +1,243 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheets %}
+<script src="{{ asset('./js/jquery-3.2.1.js') }}"></script>
+<script src="{{ asset('./js/script.js') }}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ asset('./css/style.css') }}"/>
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+{% if sucess is defined %}
+<div class="alert alert-success">
+    <strong>Yes!</strong> {{ sucess }}
+</div>
+{% endif %}
+
+
+{% if error is defined %}
+<div class="alert alert-danger">
+    <strong>Oops!</strong> {{ error }}
+</div>
+{% endif %}
+
+{% set total = 0 %}
+
+
+<div class="container">
+    <div class="row">
+        <h2>Welcome {{ user }} </h2>
+        <a href="{{ path('logout') }}" class="btn btn-info btn-lg">
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+        </a>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">       <!-- Standard button -->
+            <a href="{{ path('profile') }}"><button type="button" class="btn btn-default ribbon">Profile</button>
+            </a>
+
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <a href="{{ path('friends') }}"><button type="button" class="btn btn-primary ribbon">Friends' List</button>
+            </a>
+            <!-- Indicates a successful or positive action -->
+            <a href="{{ path('all') }}"><button type="button" class="btn btn-success ribbon">All insects</button>
+            </a>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    {% if list is defined %}
+                    <span class="glyphicon glyphicon-list"></span>Friends' List
+                    {% elseif all is defined %}
+                    <span class="glyphicon glyphicon-list"></span>Everyone List
+                    {% else %}
+                    <span class="glyphicon glyphicon-list"></span>Choose A list
+                    {% endif %}
+
+
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+
+                        <!--just friends-->
+                        {% if list is defined %}
+                        {% set num = 0 %}
+
+                        {% for item in list %}
+                        {% set total = total + 1 %}
+                        {% if loop.index0 is divisible by(5) %}
+                        {% set num = num +1 %}
+                        {% endif %}
+
+                        <li class="lista{{ num }} list-group-item ">
+                            <div class="checkbox">
+                                <label for="checkbox">
+                                    {{ item.name }}
+                                </label>
+                            </div>
+                            <div class="pull-right action-buttons">
+                                <a href="{{ path('removefriend', {'id': item.id} ) }}" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+                            </div>
+                        </li>
+
+
+                        {% endfor %}
+
+                        {% endif %}
+
+                        <!--all users-->
+                        {% if all is defined %}
+                        {% set num = 0 %}
+
+                        {% for item in all %}
+                        {% set total = total + 1 %}
+                        {% if loop.index0 is divisible by(5) %}
+                        {% set num = num +1 %}
+                        {% endif %}
+
+                        <li class="lista{{ num }} list-group-item ">
+                            <div class="checkbox">
+                                <label for="checkbox">
+                                    {{ item.name }}
+                                </label>
+                            </div>
+                            <div class="pull-right action-buttons">
+                                <a href="{{ path('addfriend', {'id': item.id} ) }}"><span class="glyphicon glyphicon-plus"></span></a>
+                            </div>
+                        </li>
+
+
+                        {% endfor %}
+
+                        {% endif %}
+
+                        <!--
+<li class="list-group-item list1">
+<div class="checkbox">
+<label for="checkbox">
+List group item heading
+</label>
+</div>
+<div class="pull-right action-buttons">
+<a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-plus"></span></a>
+<a href="http://www.jquery2dotnet.com" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
+</li>
+<li class="list-group-item list2"  style="display: none;">
+<div class="checkbox">
+<label for="checkbox2">
+List group item heading 1
+</label>
+</div>
+<div class="pull-right action-buttons">
+<a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-plus"></span></a>
+<a href="http://www.jquery2dotnet.com" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
+</li>
+<li class="list-group-item">
+<div class="checkbox">
+<label for="checkbox3">
+List group item heading 2
+</label>
+</div>
+<div class="pull-right action-buttons">
+<a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-plus"></span></a>
+<a href="http://www.jquery2dotnet.com" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
+</li>
+<li class="list-group-item">
+<div class="checkbox">
+<label for="checkbox4">
+List group item heading 3
+</label>
+</div>
+<div class="pull-right action-buttons">
+<a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-plus"></span></a>
+<a href="http://www.jquery2dotnet.com" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
+</li>
+<li class="list-group-item">
+<div class="checkbox">
+<label for="checkbox5">
+List group item heading 5
+</label>
+</div>
+<div class="pull-right action-buttons">
+<a href="http://www.jquery2dotnet.com"><span class="glyphicon glyphicon-plus"></span></a>
+<a href="http://www.jquery2dotnet.com" class="trash"><span class="glyphicon glyphicon-remove"></span></a>
+</div>
+</li>
+
+-->
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>
+                                Total Count <span class="label label-info">{{ total }}</span></h6>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="pagination pagination-sm pull-right">
+                                <li class="disabled"><a href="javascript:void(0)">«</a></li>
+                                <li class="active"><a class="group1" href="#">1 <span class="sr-only">(current)</span></a></li>
+                                <!--for friends -->
+                                {% if list is defined %}
+                                {% set num = 1 %}
+
+                                {% for item in list %}
+                                {% if loop.index0 is divisible by(5) and not loop.first %}
+                                {% set num = num +1 %}
+                                <li><a class="group{{ num }}" href="#">{{ num }}</a></li>
+
+                                {% endif %}
+
+
+                                {% endfor %}
+
+                                {% endif %}
+
+                                <!--for all insects -->
+
+                                {% if all is defined %}
+                                {% set num = 1 %}
+
+                                {% for item in all %}
+                                {% if loop.index0 is divisible by(5) and not loop.first %}
+                                {% set num = num +1 %}
+                                <li><a class="group{{ num }}" href="#">{{ num }}</a></li>
+
+                                {% endif %}
+
+
+                                {% endfor %}
+
+                                {% endif %}
+
+                                <li><a href="javascript:void(0)">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>
+{% endblock %}

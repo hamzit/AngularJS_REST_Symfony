@@ -1,0 +1,27 @@
+hamza_homepage:
+    path:     /auth
+    defaults: { _controller: HamzaBundle:Login:authenticate }
+
+friends:
+    path:     /friends
+    defaults: { _controller: HamzaBundle:Welcome:list }
+
+all:
+    path:     /all
+    defaults: { _controller: HamzaBundle:Welcome:listall }
+
+profile:
+    path:     /edit
+    defaults: { _controller: HamzaBundle:Welcome:profile }
+
+addfriend:
+    path:     /add
+    defaults: { _controller: HamzaBundle:Welcome:addfriend }
+
+removefriend:
+    path:     /remove
+    defaults: { _controller: HamzaBundle:Welcome:removefriend }
+
+register:
+    path:     /register
+    defaults: { _controller: HamzaBundle:Login:register }

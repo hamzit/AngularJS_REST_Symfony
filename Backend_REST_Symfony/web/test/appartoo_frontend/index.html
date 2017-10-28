@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body ng-app="hamza">
+
+    <!-- <p><a href="#/!">Main</a></p>
+
+    <a href="#!red">Red</a>
+    <a href="#!green">Green</a>
+    <a href="#!blue">Blue</a> -->
+
+    <div ng-view>
+
+    </div>
+
+
+    <!-- {% if test is defined %}
+    the result is
+    {{  test }}
+    {% endif %}
+
+
+    {% if error is defined %}
+    <div class="alert alert-danger">
+        <strong>Oops!</strong> {{ error }}
+    </div>
+    {% endif %}
+
+
+    {% if sucess is defined %}
+    <div class="alert alert-success">
+        <strong>Oh Yeah!</strong> {{ sucess }}
+    </div>
+    {% endif %}
+ -->
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./js/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="./js/script.js"></script>
+    <script >
+
+
+    var app = angular.module("hamza", ["ngRoute"]);
+
+app.controller('LoginCheckController', ['$scope','$location','$http', LoginCheckController]);
+
+
+      function LoginCheckController($scope,$location,$http) {
+            // $location.path("/search");
+            $scope.submit = function() { //onsubmit
+              // alert($scope.username);
+              datas = {
+                  'email' : $scope.username,
+                  'password' : $scope.password
+              };
+
+              $http({
+                method: 'POST',
+                url: 'http://rest.hamzadev.com',
+                // config: 'Content-Type: json',
+                // headers: {'Content-Type': 'application/json;charset=UTF-8'},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data : datas
+                // config: 'Content-Type: application/x-www-form-urlencoded',
+              }).then(function successCallback(data, status, headers, config) {
+                  alert('sucess');
+                  // this callback will be called asynchronously
+                  // when the response is available
+                }, function errorCallback(response, status, headers, config) {
+                    alert('fail');
+                    // console.log(header);
+                    // console.log(status);
+                    // console.log(config);
+                    // console.log(data);
+                    console.log(response);
+
+                  // called asynchronously if an error occurs
+                  // or server returns response with an error status.
+                });
+
+              // if ($scope.text) {
+              //   $scope.list.push(this.text);
+              //   $scope.text = '';
+              // }
+            };
+      }
+
+  app.config(function($routeProvider) {
+      $routeProvider
+      .when("/", {
+          templateUrl : "login.html",
+          // controller : "LoginCheckController"
+      })
+      .when("/friends", {
+        templateUrl : "friends.html"
+      })
+       .when("/profile", {
+        templateUrl : "mainprofile.html"
+      })
+      .when("/search", {
+        templateUrl : "search.html"
+      });
+  });
+
+
+
+
+    </script>
+  </body>
+</html>

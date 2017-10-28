@@ -1,0 +1,8 @@
+parameters:
+    my_user_provider.class: Auth\UserBundle\Security\Core\User\FOSUBUserProvider
+
+services:
+    my_user_provider:
+        class: "%my_user_provider.class%"
+        #this is the place where the properties are passed to the UserProvider class
+        arguments: [@fos_user.user_manager,{facebook: facebookID},@session,@doctrine.orm.entity_manager]

@@ -1,0 +1,80 @@
+
+
+{% if sucess is defined %}
+<div class="alert alert-success">
+    <strong>Oh Yeah!</strong> {{ sucess }}
+</div>
+{% endif %}
+
+
+
+<div class="container">
+    <div class="row">
+        <h2>Welcome {{ user }} </h2>
+        <a href="{{ path('logout') }}" class="btn btn-info btn-lg">
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">       <!-- Standard button -->
+            <a href="{{ path('profile') }}"><button type="button" class="btn btn-default ribbon">Profile</button>
+            </a>
+
+            <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            <a href="{{ path('friends') }}"><button type="button" class="btn btn-primary ribbon">Friends' List</button>
+            </a>
+            <!-- Indicates a successful or positive action -->
+            <a href="{{ path('all') }}"><button type="button" class="btn btn-success ribbon">All insects</button>
+            </a>
+
+
+
+
+        </div>
+        <div class="container">
+	<div class="row">
+  		<h2>Stylish Search Box</h2>
+             <div id="custom-search-input">
+                              <div class="input-group col-md-12">
+                                  <input type="text" class="  search-query form-control" placeholder="Search" />
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-danger" type="button">
+                                          <span class=" glyphicon glyphicon-search"></span>
+                                      </button>
+                                  </span>
+                              </div>
+                          </div>
+  	</div>
+  </div>
+        <div class="col-md-6">
+            <form>
+
+
+
+            <div class="form-group">
+                <span>Age</span><input type="number" name="age" id="age" tabindex="5" class="form-control" placeholder="{{ user.age }}" value="{{ user.age }}" min="0" required>
+            </div>
+            <div class="form-group">
+                <span>Race</span><input type="text" name="race" id="race" tabindex="6" class="form-control" placeholder="{{ user.race }}" value="{{ user.race }}" required>
+            </div>
+            <div class="form-group">
+                <span>Famille</span><input type="text" name="famille" id="famille" tabindex="7" class="form-control" placeholder="{{ user.famille }}" value="{{ user.famille }}" required>
+            </div>
+            <div class="form-group">
+                <span>Food</span><input type="text" name="food" id="food" tabindex="8" class="form-control" placeholder="{{ user.food }}" value="{{ user.food }}" required>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <input type="submit" name="register-submit" id="register-submit" tabindex="9" class="form-control btn btn-register" value="Update">
+                    </div>
+                </div>
+            </div>
+      </form>
+        </div>
+
+    </div>
+
+
+</div>
